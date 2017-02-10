@@ -6,12 +6,20 @@ body{
   background-color: #828080;
   color: white;
 }
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-family:"Caveat Brush",Arial,serif ;
 
+}
 h1{
   background: url("../images/noisy-texture-200x200-grey.png");
   background-color: #828080;
   color: white;
   }
+h4{
+    background: url("../images/noisy-texture-200x200-grey.png");
+    background-color: #828080;
+    color: white;
+    }
 .alin_cen{
   text-align: center;
 }
@@ -19,4 +27,9 @@ h1{
   display:block;
   margin-left: auto;
   margin-right: auto;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #828080;
+    border-color: black;
 }
