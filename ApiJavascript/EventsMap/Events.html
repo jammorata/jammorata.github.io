@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>Events</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <style>
+      html, body, #mapDiv {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://js.arcgis.com/3.19/"></script>
+    <script>
+      var map;
+
+      require(["esri/map",
+          "esri/geometry/Point",
+          "esri/symbols/SimpleMarkerSymbol",
+          "esri/Color",
+          "esri/graphic",
+          "esri/layers/GraphicsLayer",
+          "dojo/on",
+          "dojo/domReady!"],
+        function(Map,
+          Point,
+          SimpleMarkerSymbol,
+          Color,
+          graphic,
+          GraphicsLayer,
+          on) {
+
+          map = new Map("mapDiv", {
+            basemap: "satellite",
+            
+          });
+          /*map.on("zoom-start",function(evt1){
+              alert("El factor de zoom inicial es: "+ evt1.level);
+          });
+          map.on("zoom-end",function(evt2){
+              alert("El ZOOM ha cambiado, el nuevo factor de zoom es: "+ evt2.level);
+          });*/
+          map.on("click",function(evtC){
+              var p =evtC.mapPoint;
+              map.centerAt(p);
+          });
+
+
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="mapDiv"></div>
+  </body>
+</html>

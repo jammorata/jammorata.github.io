@@ -1,0 +1,17 @@
+#map1 {
+   float: left;
+   width: 50%;
+   margin: 0;
+   padding: 0;
+
+}
+#map2 {
+  float: right;
+  width: 50%;
+  margin: 0;
+  padding: 0;
+
+}
+.alin_cen{
+  text-align: center;
+}

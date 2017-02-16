@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>Las Antipodas</title>
+    <link rel="stylesheet" href="Antipodas.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <style>
+      html, body,
+    </style>
+    <script src="https://js.arcgis.com/3.19/"></script>
+    <script>
+      var map;
+
+      require(["esri/map",
+          "esri/geometry/Point",
+          "esri/symbols/SimpleMarkerSymbol",
+          "esri/Color",
+          "esri/graphic",
+          "esri/layers/GraphicsLayer",
+          "dojo/on",
+          "dojo/domReady!"],
+        function(Map,
+          Point,
+          SimpleMarkerSymbol,
+          Color,
+          graphic,
+          GraphicsLayer,
+          on) {
+
+          map = new Map("map1", {
+            basemap: "oceans",
+
+          });
+          map = new Map("map2", {
+            basemap: "oceans",
+
+          });
+      });
+    </script>
+  </head>
+
+  <body>
+      <h1 class="alin_cen">MAPA DE LAS ANTIPODAS</h1>
+        <div id="map1"></div>
+        <div id="map2"></div>
+  </body>
+</html>

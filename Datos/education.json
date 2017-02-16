@@ -1,0 +1,29 @@
+{
+    "name": "Jose A. Morata Barrado",
+    "education": [
+      {
+        "Company": "UPM",
+        "Qualification Awarded": "Introduction to the geographical information systems",
+        "Education or training organisation’s name and locality": "Cultural Heritage Center International Studies Universidad Politécnica (Madrid,Spain)",
+        "Year": "2016"
+      },
+      {
+        "Company": "AEPI",
+        "Qualification Awarded": "Professional Course of programming Python and Django",
+        "Education or training organisation’s name and locality": "Spanish Association of computer programmers (Madrid,Spain)",
+        "Year": "2015 "
+      },
+      {
+        "Company": "Bath Collegue",
+        "Qualification Awarded": "Cambridge English Entry Level Certificate B1",
+        "Education or training organisation’s name and locality": "Bath Collegue (United Kingdom)",
+        "Year": "2014"
+      },
+      {
+        "Company": "ETSI Minas",
+        "Qualification Awarded": "Geological Engineer",
+        "Education or training organisation’s name and locality": "Escuela Técnica Superior de Ingenieros de Minas. Universidad Politécnica (Madrid,Spain) ",
+        "Year": "2012"
+      }
+    ]
+}

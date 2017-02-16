@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>Map add layers</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <style>
+      html, body, #mapDiv {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://js.arcgis.com/3.19/"></script>
+    <script>
+      var map;
+      var urltiledlayer = "http://services.arcgisonline.com/arcgis/rest/services/ESRI_StreetMap_World_2D/MapServer";
+      var urldinamlayer = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer";
+      var urlfeatlayer0 = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0";
+      var urlfeatlayer1 = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/1";
+      var urlfeatlayer2 = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2"
+
+      require(["esri/map",
+          "esri/layers/ArcGISTiledMapServiceLayer",
+          "esri/layers/ArcGISDynamicMapServiceLayer",
+          "esri/layers/FeatureLayer",
+          "dojo/domReady!"],
+      function(Map,ArcGISTiledMapServiceLayer,ArcGISDynamicMapServiceLayer,FeatureLayer ) {
+        map = new Map("mapDiv", {
+            center: [-89, 35], // longitude, latitude
+            zoom:3,
+            isPanArrows: true
+        });//basemap: "oceans"  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+        tiledlayer = new ArcGISTiledMapServiceLayer(urltiledlayer,{
+          id:"tiled"
+        });
+        /*dinamlayer = new ArcGISDynamicMapServiceLayer(urldinamlayer,{
+          id:"dyn",
+          opacity:0.55
+        });*/
+        featlayer0 = new FeatureLayer(urlfeatlayer0,{
+          id:"feat0"
+        });
+        featlayer1 = new FeatureLayer(urlfeatlayer1,{
+          id:"feat1"
+        });
+        featlayer2 = new FeatureLayer(urlfeatlayer2,{
+          id:"feat2"
+        });
+        map.addLayer(tiledlayer);
+        //map.addLayer(dinamlayer);
+        map.addLayer(featlayer0)
+        map.addLayer(featlayer1)
+        map.addLayer(featlayer2)
+        });
+
+      </script>
+  </head>
+
+  <body>
+    <div id="mapDiv"></div>
+  </body>
+</html>
