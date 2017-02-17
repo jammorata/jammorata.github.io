@@ -8,10 +8,19 @@
     <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
     <style>
       html, body,
+      #mapDiv {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      },
+      #map1{},
+      #map2{},
     </style>
     <script src="https://js.arcgis.com/3.19/"></script>
     <script>
-      var map;
+      var map_antipod1;
+      var map_antipod2;
+
 
       require(["esri/map",
           "esri/geometry/Point",
@@ -19,6 +28,7 @@
           "esri/Color",
           "esri/graphic",
           "esri/layers/GraphicsLayer",
+          "esri/geometry/webMercatorUtils",
           "dojo/on",
           "dojo/domReady!"],
         function(Map,
@@ -27,23 +37,65 @@
           Color,
           graphic,
           GraphicsLayer,
+          webMercatorUtils,
           on) {
 
-          map = new Map("map1", {
-            basemap: "oceans",
+          map_antipod1 = new Map("map1", {
+            basemap: "streets",
+            zoom: 3
 
           });
-          map = new Map("map2", {
-            basemap: "oceans",
+
+          map_antipod2 = new Map("map2", {
+            basemap: "satellite",
+            zoom: 3
 
           });
+
+          map_antipod1.on("extent-change",function(change){
+
+            var center1 = change.extent.getCenter();
+            map_antipod2.centerAt(center1);
+            var coord = webMercatorUtils.xyToLngLat(center1.x, center1.y);
+
+
+            if (coord[0] <= 0) {
+                    coord[0] = coord[0]+180
+                    coord[1] = coord[1]*(-1)
+                  }
+            else if (coord[0] > 0) {
+                    coord[0] = coord[0]-180
+                    coord[1] = coord[1]*(-1)
+                    } ;
+
+
+          map_antipod2.centerAt(coord);
+          });
+
+          map_antipod1.on("zoom-end",function(change1){
+
+            var zoom1 = change1.level;
+            map_antipod2.setLevel(zoom1);
+          });
+/*          map_antipod2.on("extent-change",function(change){
+
+            var center2 = change.extent.getCenter();
+            map_antipod1.centerAt(center2);
+          });
+
+          map_antipod2.on("zoom-end",function(change){
+            var zoom2 = change.getZoom();
+            map_antipod1.setZoom(zoom2);
+          });
+*/
       });
     </script>
   </head>
 
   <body>
-      <h1 class="alin_cen">MAPA DE LAS ANTIPODAS</h1>
+        <h1 class="alin_cen">MAPA DE LAS ANTIPODAS</h1>
         <div id="map1"></div>
         <div id="map2"></div>
+
   </body>
 </html>
