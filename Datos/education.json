@@ -3,27 +3,48 @@
     "education": [
       {
         "Company": "UPM",
-        "Qualification Awarded": "Introduction to the geographical information systems",
-        "Education or training organisation’s name and locality": "Cultural Heritage Center International Studies Universidad Politécnica (Madrid,Spain)",
+        "Qualification": "Introduction to the geographical information systems",
+        "Name_locality": "Cultural Heritage Center International Studies Universidad Politécnica (Madrid,Spain)",
         "Year": "2016"
       },
       {
         "Company": "AEPI",
-        "Qualification Awarded": "Professional Course of programming Python and Django",
-        "Education or training organisation’s name and locality": "Spanish Association of computer programmers (Madrid,Spain)",
+        "Qualification": "Professional Course of programming Python and Django",
+        "Name_locality": "Spanish Association of computer programmers (Madrid,Spain)",
         "Year": "2015 "
       },
       {
         "Company": "Bath Collegue",
-        "Qualification Awarded": "Cambridge English Entry Level Certificate B1",
-        "Education or training organisation’s name and locality": "Bath Collegue (United Kingdom)",
+        "Qualification": "Cambridge English Entry Level Certificate B1",
+        "Name_locality": "Bath Collegue (United Kingdom)",
         "Year": "2014"
       },
       {
         "Company": "ETSI Minas",
-        "Qualification Awarded": "Geological Engineer",
-        "Education or training organisation’s name and locality": "Escuela Técnica Superior de Ingenieros de Minas. Universidad Politécnica (Madrid,Spain) ",
+        "Qualification": "Geological Engineer",
+        "Name_locality": "Escuela Técnica Superior de Ingenieros de Minas. Universidad Politécnica (Madrid,Spain) ",
         "Year": "2012"
       }
     ]
 }
+"__comment": "Este script es para ponerlo en el html que relaciona el archivo json
+<script>
+$(function(){
+$("#btn").on("click",function(){
+$.getJSON("education.json",function (data) {
+var company = data.education.Company;
+var qualift = data.education.Qualification;
+var nam_loc = data.education.Name_locality;
+var year    = data.education.year;
+$("#answer").append(company);
+$("#answer").append(qualift);
+$("#answer").append(nam_loc);
+$("#answer").append(year);
+});
+});
+});
+
+</script>
+<button id="btn" type="button">Load...</button>
+<div id="answer"></div>
+"

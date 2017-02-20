@@ -6,6 +6,7 @@
     <title>Las Antipodas</title>
     <link rel="stylesheet" href="Antipodas.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
     <style>
       html, body,
       #mapDiv {
@@ -41,18 +42,21 @@
           on) {
 
           map_antipod1 = new Map("map1", {
-            basemap: "streets",
+            basemap: "national-geographic",
+            center: [-3.62, 40.42],
             zoom: 3
+
+
 
           });
 
           map_antipod2 = new Map("map2", {
-            basemap: "satellite",
+            basemap: "national-geographic",
             zoom: 3
 
           });
 
-          map_antipod1.on("extent-change",function(change){
+           map_antipod1.on("extent-change",function(change){
 
             var center1 = change.extent.getCenter();
             map_antipod2.centerAt(center1);
@@ -77,17 +81,33 @@
             var zoom1 = change1.level;
             map_antipod2.setLevel(zoom1);
           });
-/*          map_antipod2.on("extent-change",function(change){
 
-            var center2 = change.extent.getCenter();
-            map_antipod1.centerAt(center2);
-          });
 
-          map_antipod2.on("zoom-end",function(change){
-            var zoom2 = change.getZoom();
-            map_antipod1.setZoom(zoom2);
-          });
-*/
+  /*      map_antipod2.on("extent-change",function(change2){
+
+          var center2 = change2.extent.getCenter();
+          map_antipod1.centerAt(center2);
+          var coord2 = webMercatorUtils.xyToLngLat(center2.x, center2.y);
+
+
+          if (coord2[0] <= 0) {
+               coord2[0] = coord2[0]+180
+               coord2[1] = coord2[1]*(-1)
+             }
+          else if (coord2[0] > 0) {
+               coord2[0] = coord2[0]-180
+               coord2[1] = coord2[1]*(-1)
+               } ;
+
+
+        map_antipod1.centerAt(coord2);
+        });
+
+        map_antipod2.on("zoom-end",function(change3){
+
+          var zoom2 = change3.level;
+          map_antipod1.setLevel(zoom2);
+        }); */
       });
     </script>
   </head>

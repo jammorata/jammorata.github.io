@@ -1,19 +1,35 @@
 #map1 {
    float: left;
-   height: 100%;
-   width: 50%;
-   margin: 0;
+   height: 75%;
+   width: 45%;
+   margin: 2%;
    padding: 0;
+   border: solid white;
+   border-width: 6px;
+
 
 }
 #map2 {
   float: right;
-  height: 100%;
-  width: 50%;
-  margin: 0;
+  height: 75%;
+  width: 45%;
+  margin: 2%;
   padding: 0;
+  border: solid white;
+  border-width: 6px;
 
 }
+
 .alin_cen{
   text-align: center;
+}
+body{
+  background-image: url(https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSmIxehMBjkCFVkoBZWK35xWliAGTNrqNw--C1cpVJLdOa_sJTt);
+
+}
+
+h1{
+  background-color: rgba(243,226,199,1);
+  font-family: 'Bangers', cursive;
+  font-size: 60px;
 }
