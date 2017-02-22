@@ -10,111 +10,121 @@
     <style>
       html, body,
       #mapDiv {
-        height: 100%;
+        height: 90%;
         margin: 0;
         padding: 0;
       },
-      #map1{},
+      #map{},
       #map2{},
     </style>
     <script src="https://js.arcgis.com/3.19/"></script>
     <script>
-      var map_antipod1;
-      var map_antipod2;
-
-
+      var map;
+        var map2;
       require(["esri/map",
-          "esri/geometry/Point",
-          "esri/symbols/SimpleMarkerSymbol",
-          "esri/Color",
-          "esri/graphic",
-          "esri/layers/GraphicsLayer",
-          "esri/geometry/webMercatorUtils",
-          "dojo/on",
-          "dojo/domReady!"],
-        function(Map,
-          Point,
-          SimpleMarkerSymbol,
-          Color,
-          graphic,
-          GraphicsLayer,
-          webMercatorUtils,
-          on) {
-
-          map_antipod1 = new Map("map1", {
-            basemap: "national-geographic",
-            center: [-3.62, 40.42],
-            zoom: 3
-
-
-
-          });
-
-          map_antipod2 = new Map("map2", {
-            basemap: "national-geographic",
-            zoom: 3
-
-          });
-
-           map_antipod1.on("extent-change",function(change){
-
-            var center1 = change.extent.getCenter();
-            map_antipod2.centerAt(center1);
-            var coord = webMercatorUtils.xyToLngLat(center1.x, center1.y);
-
-
-            if (coord[0] <= 0) {
-                    coord[0] = coord[0]+180
-                    coord[1] = coord[1]*(-1)
-                  }
-            else if (coord[0] > 0) {
-                    coord[0] = coord[0]-180
-                    coord[1] = coord[1]*(-1)
-                    } ;
-
-
-          map_antipod2.centerAt(coord);
-          });
-
-          map_antipod1.on("zoom-end",function(change1){
-
-            var zoom1 = change1.level;
-            map_antipod2.setLevel(zoom1);
-          });
-
-
-  /*      map_antipod2.on("extent-change",function(change2){
-
-          var center2 = change2.extent.getCenter();
-          map_antipod1.centerAt(center2);
-          var coord2 = webMercatorUtils.xyToLngLat(center2.x, center2.y);
-
-
-          if (coord2[0] <= 0) {
-               coord2[0] = coord2[0]+180
-               coord2[1] = coord2[1]*(-1)
-             }
-          else if (coord2[0] > 0) {
-               coord2[0] = coord2[0]-180
-               coord2[1] = coord2[1]*(-1)
-               } ;
-
-
-        map_antipod1.centerAt(coord2);
-        });
-
-        map_antipod2.on("zoom-end",function(change3){
-
-          var zoom2 = change3.level;
-          map_antipod1.setLevel(zoom2);
-        }); */
+                "esri/geometry/Point",
+                "esri/geometry/webMercatorUtils",
+                "dojo/domReady!"],
+      function(Map,
+              Point,
+              webMercatorUtils) {
+//Se crea el mapa 1
+      map = new Map("map", {
+        basemap: "national-geographic",
+        center: [-3.62, 40.42],
+        zoom: 3
       });
-    </script>
+//Se crea el mapa 2
+      map2 = new Map("map2", {
+        basemap: "national-geographic",
+        zoom: 3
+      });
+//listener de LOAD al mapa 1 para insertar la mira
+      map.on("load", function(evt){
+//se captura el elemento del dom map_root para insertar ahí la imagen
+        elem = document.getElementById("map_root");
+//se crea una imágen de manéra dinámica (desde JavaScript)
+            var imagen= document.createElement("img");
+      //se meten los atributos para que la imagen se situe en el centro del mapa
+            imagen.setAttribute("src", "https://d30y9cdsu7xlg0.cloudfront.net/png/3007-200.png");
+            imagen.setAttribute("style","z-index : 100; position : absolute; top : 200px; left : 325px; height: 40px; width: 40px;");
+      //se añade la imagen al elemento del dom "map_root"
+            elem.appendChild(imagen);
+      });
+//este evento sirve para insertar la mira en el segundo mapa y para sincronizar el segundo mapa en el primero cuando el segundo mapa esté cargado
+      map2.on("load", function(evt){
+//recogemos el extent y el zoom del primer mapa para sincronizarlo con el segundo mapa
+            var extent = map.extent;
+            var zoom = map.getZoom();
+      //le pasamos a la función el mapa2 ya que es el que queremos que se sincronize en este caso
+            sinconizar(map2,extent, zoom);
+      //al igual que en el primer mapa, añadimos la mira de la misma manera pero al segundo mapa
+            elem = document.getElementById("map2_root");
+            var imagen= document.createElement("img");
+            imagen.setAttribute("src", "https://d30y9cdsu7xlg0.cloudfront.net/png/3007-200.png");
+            imagen.setAttribute("style","z-index : 100");
+            imagen.setAttribute("style","position : absolute; top : 200px; left : 325px; height: 40px; width: 40px;");
+            elem.appendChild(imagen);
+      });
+
+//recogemos el evento "mouse-down" del mapa 1 para sincronizar el segundo
+      map.on("mouse-down", function(){
+            var extent = map.extent;
+            var zoom = map.getZoom();
+            sinconizar(map2,extent, zoom);
+      });
+//recogemos el evento "mouse-down" del mapa 2 para sincronizar el primero
+      map2.on("mouse-down", function(){
+            var extent = map2.extent;
+            var zoom = map2.getZoom();
+            sinconizar(map, extent, zoom);
+      });
+//recogemos el evento "zoom-end" para sincronizar el zoom con el mapa 2
+      map.on("zoom-end", function(evt){
+            var zoom = evt.level;
+            sinc_zoom(map2, zoom);
+      });
+//recogemos el evento "zoom-end" para sincronizar el zoom con el mapa 1
+      map2.on("zoom-end", function(evt){
+            var zoom = evt.level;
+            sinc_zoom(map, zoom);
+      });
+//función que sincroniza el zoom con el mapa que le pasamos
+      function sinc_zoom(mapa, zoom){
+            mapa.setZoom(zoom);
+          }
+//función que sincroniza el mapa con el punto de las antípodas y también los niveles de zoom al mapa que le pasamos como parámetro a esta función
+      function sinconizar(mapa_dest, extent, zoom){
+//obtención del centro del extent
+            var center = extent.getCenter();
+//transformación del centro a coordenadas longitud/latitud
+            var centerLatLong = webMercatorUtils.xyToLngLat(center.x, center.y);
+//la latitud en la antípoda es la coordenada inversa
+            var latitud = -centerLatLong[1];
+//la longitud de la antípoda la obtenemos sumando o restando 180 en función del signo de la longitud
+            var longitud;
+            if (centerLatLong[0] < 0){
+              longitud = centerLatLong[0] + 180;
+            }
+            else{
+              longitud = centerLatLong[0] - 180;
+            }
+            //transformamos las coordenadas long y lat a X Y
+            var center2WebMercator = webMercatorUtils.lngLatToXY(longitud, latitud);
+            //creamos el punto con estas coordenadas X e Y
+            var center2 = new Point(center2WebMercator[0], center2WebMercator[1], mapa_dest.spatialReference);
+            //centramos el mapa en el punto de las antípodas y sincronizamos el zoom
+            if(mapa_dest.loaded){
+              mapa_dest.centerAndZoom(center2, zoom);
+            }
+      }
+});
+</script>
   </head>
 
   <body>
         <h1 class="alin_cen">MAPA DE LAS ANTIPODAS</h1>
-        <div id="map1"></div>
+        <div id="map"></div>
         <div id="map2"></div>
 
   </body>

@@ -1,0 +1,34 @@
+{ "hobbies":
+{
+"hobby1": "Music",
+"Bands":
+[
+  ["Arcade Fire","Neighborhood 2 (Laïka)"],
+  ["New Order","Blue Monday"],
+  ["Joy Division","Love Will Tear Us Apart"],
+  ["Lori Meyers ","Mi realidad"]
+],
+
+"hobby2": "Reading",
+"Books":
+[
+  ["Steppenwolf","Hermann Hesse"],
+  ["On the Road","Jack Kerouac"],
+  ["Porterhouse Blue","Tom Sharpe"],
+  ["Tender is the night","F. Scott Fitzgerald"]
+],
+"hobby3": "Film",
+"Movies":
+[
+  ["Reservoir Dogs","Quentin Tarantino"],
+  ["24 Hours Party People","Michael Winterbottom"],
+  ["Trainspoting","Danny Boyle"],
+  ["The Fight Club","David Fincher"]
+],
+"hobby4": "Sport",
+"Basketball":
+[
+  ["NBA","Golden State Warriors"]
+]
+}
+}

@@ -12,6 +12,47 @@
   integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
   crossorigin="anonymous">
   </script>
+  <script>
+  $(function(){
+  $("#btn").on("click",function(){
+  $.getJSON("about.json",function (data) {
+  var hob = data.hobbies.hobby1;
+  var hobMusic =data.hobbies.Bands;
+  var hob1 = data.hobbies.hobby2;
+  var hobRead =data.hobbies.Books;
+  var hob2 = data.hobbies.hobby3;
+  var hobFilm =data.hobbies.Movies;
+  var hob3 = data.hobbies.hobby4;
+  var hobSpo  =data.hobbies.Basketball;
+  $("#answer").append(" <br><br>"+hob+" <br><br>");
+
+  for(x=0; x<hobMusic.length; x++)
+  {
+  $("#answer").append("- Band: "+hobMusic[x][0]+", - Theme: "+hobMusic[x][1]+" <br>");
+  }
+  $("#answer").append(" <br><br>"+hob1+" <br><br>");
+
+  for(y=0; y<hobRead.length; y++)
+  {
+  $("#answer").append("- Book: "+hobRead[y][0]+", - Writer: "+hobRead[y][1]+" <br>");
+  }
+  $("#answer").append(" <br><br>"+hob2+" <br><br>");
+
+  for(z=0; z<hobFilm.length; z++)
+  {
+  $("#answer").append("- Movie: "+hobFilm[z][0]+", - Director: "+hobFilm[z][1]+" <br>");
+  }
+  $("#answer").append(" <br><br>"+hob3+" <br><br>");
+
+  for(w=0; w<hobSpo.length; w++)
+  {
+  $("#answer").append("- League: "+hobSpo[w][0]+", - Team: "+hobSpo[w][1]+" <br>");
+  }
+  });
+  });
+  });
+
+  </script>
   </head>
   <body>
     <!-- Menú superior -->
@@ -59,6 +100,11 @@
           <li><img src="../images/correo.png"  alt="icono email" width="20" height="20"><strong>  Email: </strong> jam_morata@yahoo.es</li></ul>
         <hr>
       </div>
+      <div id="answer" class="jumbotron">
+          <button id="btn" type="button">Hobbies...</button>
+      </div>
     </div>
+
+
   </body>
 </html>
