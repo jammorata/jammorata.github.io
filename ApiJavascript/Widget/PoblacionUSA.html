@@ -25,15 +25,32 @@
          display: block;
          position: absolute;
          z-index: 2;
-         top: 2px;
-         left: 300px;
+         top: 140px;
+         left: 15px;
       }
       #layerList{
+        display: block;
+        position: absolute;
+        z-index: 2;
+        top: 5px;
+        right: 5px;
 
-        width:40%;
+
       }
       #layerListPane{
-        width:40%;
+        width:25%;
+      }
+      #HomeButton {
+        position: absolute;
+        top: 95px;
+        left: 15px;
+        z-index: 50;
+      }
+      #BasemapToggle {
+      position: absolute;
+      top: 12px;
+      left:  60px;
+      z-index: 50;
       }
       .esriLayer{
       background-color: #fff;
@@ -56,24 +73,46 @@
       var map;
 
       require(["esri/map",
-               "esri/layers/ArcGISDynamicMapServiceLayer",
-               "esri/dijit/LayerList",
-               "esri/dijit/Search",
-               "esri/InfoTemplate",
-               "esri/layers/FeatureLayer",
-               "esri/InfoTemplate",
-               "dijit/layout/BorderContainer",
-               "dijit/layout/ContentPane",
-               "dojo/domReady!"],
-               function(Map,ArcGISDynamicMapServiceLayer,LayerList,Search,InfoTemplate,FeatureLayer,InfoTemplate) {
+        "esri/dijit/Search",
+        "esri/layers/ArcGISDynamicMapServiceLayer",
+        "esri/layers/FeatureLayer",
+        "esri/InfoTemplate",
+        "esri/dijit/LayerList",
+        "esri/dijit/BasemapToggle",
+        "esri/dijit/OverviewMap",
+        "dojo/parser",
+        "esri/layers/ArcGISTiledMapServiceLayer",
+        "esri/dijit/HomeButton",
+        "esri/dijit/Scalebar",
+        "dijit/layout/BorderContainer",
+         "dijit/layout/ContentPane",
+         "dojo/domReady!"
+      ], function (Map,
+         Search,
+         ArcGISDynamicMapServiceLayer,
+         FeatureLayer,
+         InfoTemplate,
+         LayerList,
+         BasemapToggle,
+         OverviewMap,
+         parser,
+         ArcGISTiledMapServiceLayer,
+         HomeButton,
+         Scalebar) {
+
+         parser.parse();
+
+
+
         map = new Map("map", {
           basemap: "gray",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
-          center: [-97.45, 40.75], // longitude, latitude
-          zoom: 4
+          center: [-97.45, 37.50], // longitude, latitude
+          zoom: 5
         });
         var layer = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",{
         });
         map.addLayer(layer);
+
         var layerList = new LayerList({
         map: map,
         showLegend: true,
@@ -98,7 +137,7 @@
          var sources = search.get ("sources");
 
          var infotempCities = new InfoTemplate("Attributes", "City Name: ${areaname}<br>Population: ${pop2000}");
-         var infotempStates = new InfoTemplate("Attributes", "State Name: ${state_name}<br>Capital: ${capital}<br>Population: ${pop2000}");
+         var infotempStates = new InfoTemplate("Attributes", "State Name: ${state_name}<br>Population: ${pop2000}");
 
          sources.push(
 
@@ -134,6 +173,17 @@
 
          search.startup();
 
+         var home = new HomeButton({
+         map: map
+         }, "HomeButton");
+         home.startup();
+
+         var toggle = new BasemapToggle({
+         map: map,
+         basemap: "satellite"
+         }, "BasemapToggle");
+         toggle.startup();
+
 
 
 
@@ -146,16 +196,14 @@
   </head>
 
   <body class="calcite">
-    <div class="container" data-dojo-type="dijit/layout/BorderContainer"
-         data-dojo-props="design:'headline',gutters:false">
-    <div id="layerListPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'right'">
-           <div id="layerList"></div>
-           <div id="search"></div>
-    </div>
-    <div id="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'"></div>
+    <div id="search"></div>
+    <div id="HomeButton"></div>
+    <div id="BasemapToggle"></div>
+   <div id="map">
 
-
-
-    </div>
+   </div>
+   <div id="layerListPane">
+      <div id="layerList"></div>
+   </div>
   </body>
 </html>
