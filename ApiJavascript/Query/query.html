@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Query</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+	<script src="https://js.arcgis.com/3.19/"></script>
+
+	<style>
+	html, body, #mapDiv {
+		padding: 0;
+		margin: 0;
+		height: 100%;}
+	</style>
+
+	<script>
+
+
+	require(["esri/map",
+		"esri/geometry/Circle",
+		"esri/layers/ArcGISDynamicMapServiceLayer",
+		"esri/tasks/query",
+		"esri/tasks/QueryTask",
+		"esri/geometry/Polygon",
+		"esri/symbols/PictureMarkerSymbol",
+		"esri/symbols/SimpleFillSymbol",
+		"esri/graphic",
+		"esri/layers/GraphicsLayer",
+		"esri/Color",
+		"dojo/domReady!"],
+	function(Map, Circle, ArcGISDynamicMapServiceLayer, Query, QueryTask, Polygon, PictureMarkerSymbol, SimpleFillSymbol, Graphic, GraphicsLayer, Color) {
+
+		    map = Map("mapDiv", {
+		    	center: [-97.45, 37.50],
+		    	zoom: 5,
+		    	basemap: "gray"
+		  	});
+		    dynamLayer = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",{
+          id:"usa",
+          opacity:0.5
+        });
+        	map.addLayer(dynamLayer);
+        	var graphicLayer = new GraphicsLayer();
+        	map.addLayer(graphicLayer);
+
+        	var myQuery = new Query();
+
+        	myQuery.where = "pop2000 > 1000000";
+
+
+		myQuery.outFields = ["areaname", "pop2000"];
+
+		myQuery.returnGeometry = true;
+		myQuery.outSpatialReference = map.spatialReference;
+
+
+		var myQueryTask = new QueryTask("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0");
+		map.on("click",function(evt){
+
+		var circle = new Circle({
+			center: evt.mapPoint,
+		radius: 500000
+		});
+
+		myQuery.geometry = circle;
+
+		myQuery.spatialRelationship = Query.SPATIAL_REL_WITHINS;
+		var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, null, new Color([0,255,0,0.2]));
+		var gr = new Graphic(circle, symbol);
+		graphicLayer.clear();
+		graphicLayer.add(gr);
+
+
+		//ejecutamos la query y cuando finalize la consulta lanzamos la función show
+		myQueryTask.execute(myQuery,show);
+		});
+		function show(fsResult){
+			var features = fsResult.features;
+			map.graphics.clear();
+			if(features.length!=0){
+				var ptPicSymbol = new PictureMarkerSymbol("https://image.flaticon.com/icons/svg/34/34338.svg", 50, 50);
+				ptPicSymbol.setOffset(0,25);
+				for (var i = 0; i<features.length; i++){
+					features[i].symbol = ptPicSymbol;
+					map.graphics.add(features[i]);
+				}
+			} else {
+				alert("no se ha encontrado ninguna entidad que cumpla las condiciones")
+			}
+		};
+	});
+	</script>
+	</head>
+	<body class="claro">
+  		<div id="mapDiv"></div>
+  	</body>
+</html>
