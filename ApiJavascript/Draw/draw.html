@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Renderer</title>
+    <title>Draw</title>
 
     <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
 	<script src="https://js.arcgis.com/3.19/"></script>
@@ -51,6 +51,7 @@
 
   <script>
 
+
   		require(["esri/map",
                "esri/symbols/SimpleMarkerSymbol",
                "esri/renderers/SimpleRenderer",
@@ -64,8 +65,9 @@
                "esri/graphic",
                "esri/layers/GraphicsLayer",
                "esri/symbols/PictureMarkerSymbol",
+               "esri/toolbars/draw",
                "dojo/domReady!"],
-      function(Map,SimpleMarkerSymbol,SimpleRenderer,ArcGISDynamicMapServiceLayer,Query,QueryTask,Circle,SimpleFillSymbol,Color,FeatureSet,Graphic,GraphicsLayer,PictureMarkerSymbol
+      function(Map,SimpleMarkerSymbol,SimpleRenderer,ArcGISDynamicMapServiceLayer,Query,QueryTask,Circle,SimpleFillSymbol,Color,FeatureSet,Graphic,GraphicsLayer,PictureMarkerSymbol,Draw
         ) {
 //Creo el mapa con un basempa
           map = new Map("map", {
@@ -74,6 +76,17 @@
             basemap: "terrain",
             isPanArrows: true
           });
+//creo la barra de draw
+          var toolbarDraw = new Draw(map,{
+            tooltipOffset:20,
+            drawTime:90
+          });
+//Defino simbologia
+
+          var symbolPoly = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, null,new Color([255,0,0,0.5]));
+
+          toolbarDraw.setFillSymbol(symbolPoly)
+
 //Creo una capa dinamica de las ciudades con su url id cities y la añado al mapa
             dynamLayer = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",{
                 id:"cities",
@@ -108,7 +121,7 @@
 
 //Creo la query task para que se cumpla la peticion de que se intersecten en un radio de 600 Km al realizar la interseccion
           var myQueryTask = new QueryTask("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0");
-          map.on("click",function(evt){
+/*          map.on("click",function(evt){
     //Creo una variable para una entidad geometrica de tipo circulo de radio 600 Km
               var circulo = new Circle({
                 center: evt.mapPoint,
@@ -130,7 +143,7 @@
     //Ejecuto la query y cuando finalize la consulta lanzamos la función show
               myQueryTask.execute(myQuery,show);
           });
-
+*/
             function show(fsResult){
 //se recoge el array de entidades que hay dentro del feature result que nos devuelve la función show
   				         var features = fsResult.features;
