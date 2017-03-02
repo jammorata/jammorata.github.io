@@ -70,6 +70,7 @@
     </style>
     <script src="https://js.arcgis.com/3.19/"></script>
     <script>
+    //creo la variable map que contendra al mapa
       var map;
 
       require(["esri/map",
@@ -103,42 +104,48 @@
          parser.parse();
 
 
-
+//Añado un nuevo mapa
         map = new Map("map", {
-          basemap: "gray",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+          basemap: "dark-gray",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
           center: [-97.45, 37.50], // longitude, latitude
-          zoom: 5
+          zoom: 4,
         });
+
+  //Creo una variable que contendrá una capa dinámica con la url del server
         var layer = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",{
         });
+  //La añado al mapa
         map.addLayer(layer);
-
+//Creo una variable que contendrá la lista de las capas
         var layerList = new LayerList({
         map: map,
         showLegend: true,
         showSubLayers: true,
         showOpacitySlider: true,
         layers: [
+          //configuro sus atributos
           {   layer:layer,
-              showSubLayers: true, // optional, show sublayers for this layer. Defaults to the widget's 'showSubLayers' property.
-              showLegend: true, // optional, display a legend for the layer items.
-              showOpacitySlider: true, // optional, display the opacity slider for layer items.
+              showSubLayers: true,
+              showLegend: true,
+              showOpacitySlider: true,
               }
 
                 ]},"layerList");
-        layerList.startup();
 
+//Inicializo
+        layerList.startup();
+//Creo una variable search para añadir el buscador y lo configuro
         var search = new Search({
             map: map,
             enableButtonMode: true,
             enableInfoWindow: true,
          }, "search");
-
+//Las fuentes de datos de los buscadores será las capas de ciudades y estados
          var sources = search.get ("sources");
-
+//Creo las infotemplates para las capas de ciudades y estados
          var infotempCities = new InfoTemplate("Attributes", "City Name: ${areaname}<br>Population: ${pop2000}");
          var infotempStates = new InfoTemplate("Attributes", "State Name: ${state_name}<br>Population: ${pop2000}");
-
+//Configuro las fuentes del buscador
          sources.push(
 
                     {
@@ -170,28 +177,23 @@
           });
 
          search.set("sources",sources);
-
+//Inicializo
          search.startup();
-
+//Ahora para configurar el boton de volver al principio
          var home = new HomeButton({
          map: map
          }, "HomeButton");
+//Inicializo
          home.startup();
-
+//Creo una variable search para añadir un boton para cambiar el basemap y lo configuro
          var toggle = new BasemapToggle({
          map: map,
          basemap: "satellite"
          }, "BasemapToggle");
+//Inicializo
          toggle.startup();
 
-
-
-
-                    });
-
-
-
-
+    });
     </script>
   </head>
 

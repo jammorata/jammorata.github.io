@@ -19,8 +19,9 @@
     </style>
     <script src="https://js.arcgis.com/3.19/"></script>
     <script>
+    //defino las variables de los dos mapas
       var map;
-        var map2;
+      var map2;
       require(["esri/map",
                 "esri/geometry/Point",
                 "esri/geometry/webMercatorUtils",
@@ -28,37 +29,37 @@
       function(Map,
               Point,
               webMercatorUtils) {
-//Se crea el mapa 1
+//Creo mapa 1
       map = new Map("map", {
         basemap: "national-geographic",
         center: [-3.62, 40.42],
         zoom: 3
       });
-//Se crea el mapa 2
+//Creo el mapa 2
       map2 = new Map("map2", {
         basemap: "national-geographic",
         zoom: 3
       });
-//listener de LOAD al mapa 1 para insertar la mira
-      map.on("load", function(evt){
-//se captura el elemento del dom map_root para insertar ahí la imagen
+//Utilizo el evento load para cuando se carge el mapa se cargue el icono de ubicacion
+      map.on("load", function(evento){
+//Utilizo elemento del dom map_root para insertar el icono
         elem = document.getElementById("map_root");
-//se crea una imágen de manéra dinámica (desde JavaScript)
+//Creo la variable del icono
             var imagen= document.createElement("img");
-      //se meten los atributos para que la imagen se situe en el centro del mapa
+      //Configuro los atributos de la imagen para que los cargue en el centro del mapa
             imagen.setAttribute("src", "https://image.flaticon.com/icons/svg/34/34338.svg");
             imagen.setAttribute("style","z-index : 100; position : absolute; top : 200px; left : 325px; height: 40px; width: 40px;");
-      //se añade la imagen al elemento del dom "map_root"
+      //Añado el icono al mapa con la funcion appendChild
             elem.appendChild(imagen);
       });
-//este evento sirve para insertar la mira en el segundo mapa y para sincronizar el segundo mapa en el primero cuando el segundo mapa esté cargado
-      map2.on("load", function(evt){
-//recogemos el extent y el zoom del primer mapa para sincronizarlo con el segundo mapa
+//Realizo lo mismo para que se cargue en el mapa dos
+      map2.on("load", function(evento){
+//Recojo el extent y el zoom del primer mapa en sus respectivas variables para sincronizarlo con el segundo mapa
             var extent = map.extent;
             var zoom = map.getZoom();
-      //le pasamos a la función el mapa2 ya que es el que queremos que se sincronize en este caso
-            sinconizar(map2,extent, zoom);
-      //al igual que en el primer mapa, añadimos la mira de la misma manera pero al segundo mapa
+      //Introduzco la función para el mapa2 para sincronizarlo
+            sincronizar(map2,extent, zoom);
+      //Utilizo elemento del dom map_root para insertar el icono al segundo mapa y configuro sus atributos y lo añado al mapa
             elem = document.getElementById("map2_root");
             var imagen= document.createElement("img");
             imagen.setAttribute("src", "https://image.flaticon.com/icons/svg/34/34338.svg");
@@ -67,41 +68,41 @@
             elem.appendChild(imagen);
       });
 
-//recogemos el evento "mouse-down" del mapa 1 para sincronizar el segundo
+//Utilizo el evento "mouse-down" del mapa 1 para sincronizar con el mapa2 (asi evito el efecto muelle del map extent)
       map.on("mouse-down", function(){
             var extent = map.extent;
             var zoom = map.getZoom();
-            sinconizar(map2,extent, zoom);
+            sincronizar(map2,extent, zoom);
       });
-//recogemos el evento "mouse-down" del mapa 2 para sincronizar el primero
+//Utilizo el evento "mouse-down" del mapa 2 para sincronizar con el mapa1
       map2.on("mouse-down", function(){
             var extent = map2.extent;
             var zoom = map2.getZoom();
-            sinconizar(map, extent, zoom);
+            sincronizar(map, extent, zoom);
       });
-//recogemos el evento "zoom-end" para sincronizar el zoom con el mapa 2
+//Utilizo el evento "zoom-end" del mapa 1 para sincronizar con el mapa2
       map.on("zoom-end", function(evt){
             var zoom = evt.level;
             sinc_zoom(map2, zoom);
       });
-//recogemos el evento "zoom-end" para sincronizar el zoom con el mapa 1
+//Utilizo el evento "zoom-end" del mapa 2 para sincronizar con el mapa1
       map2.on("zoom-end", function(evt){
             var zoom = evt.level;
             sinc_zoom(map, zoom);
       });
-//función que sincroniza el zoom con el mapa que le pasamos
-      function sinc_zoom(mapa, zoom){
+//Creo una funcion para sincronizar el zoom con el mapa
+      function sinc_zoom(map, zoom){
             mapa.setZoom(zoom);
           }
-//función que sincroniza el mapa con el punto de las antípodas y también los niveles de zoom al mapa que le pasamos como parámetro a esta función
-      function sinconizar(mapa_dest, extent, zoom){
-//obtención del centro del extent
+//Creo una función para que se observe el mapa con el punto de las antípodas y también los niveles de zoom
+      function sincronizar(mapa_dest, extent, zoom){
+//Obtengo del centro del extent
             var center = extent.getCenter();
-//transformación del centro a coordenadas longitud/latitud
+//Transformo a coordenadas longitud/latitud
             var centerLatLong = webMercatorUtils.xyToLngLat(center.x, center.y);
-//la latitud en la antípoda es la coordenada inversa
+//la latitud en las antipodas es la inversa
             var latitud = -centerLatLong[1];
-//la longitud de la antípoda la obtenemos sumando o restando 180 en función del signo de la longitud
+//la longitud en las antipodas la obtengo sumando o restando 180 grados en función del signo de la longitud
             var longitud;
             if (centerLatLong[0] < 0){
               longitud = centerLatLong[0] + 180;
@@ -109,11 +110,11 @@
             else{
               longitud = centerLatLong[0] - 180;
             }
-            //transformamos las coordenadas long y lat a X Y
+            //transformo las coordenadas long y lat a X Y con webMercatorUtils
             var center2WebMercator = webMercatorUtils.lngLatToXY(longitud, latitud);
-            //creamos el punto con estas coordenadas X e Y
+            //Creo el punto con las coordenadas X e Y
             var center2 = new Point(center2WebMercator[0], center2WebMercator[1], mapa_dest.spatialReference);
-            //centramos el mapa en el punto de las antípodas y sincronizamos el zoom
+            //Centro el mapa en el punto de las antípodas y sincronizo el zoom
             if(mapa_dest.loaded){
               mapa_dest.centerAndZoom(center2, zoom);
             }

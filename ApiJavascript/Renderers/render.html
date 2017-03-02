@@ -67,30 +67,30 @@
                "dojo/domReady!"],
       function(Map,SimpleMarkerSymbol,SimpleRenderer,ArcGISDynamicMapServiceLayer,Query,QueryTask,Circle,SimpleFillSymbol,Color,FeatureSet,Graphic,GraphicsLayer,PictureMarkerSymbol
         ) {
-//Creo el mapa con un basempa
+//Creo el mapa con un basemap
           map = new Map("map", {
             center: [-97.45, 37.50],
             zoom: 4,
             basemap: "terrain",
             isPanArrows: true
           });
-//Creo una capa dinamica de las ciudades con su url id cities y la añado al mapa
+//Creo una capa dinamica  con la url del servicio y la añado al mapa
             dynamLayer = new ArcGISDynamicMapServiceLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer",{
                 id:"cities",
                 opacity: 0.5
             });
 
                     map.addLayer(dynamLayer);
-//creo una capa de gráficos y la añado al mapa
+//Creo una capa de gráficos y la añado al mapa
           var graphicLayer = new GraphicsLayer();
-//creo la variable symbol para crear el simbolo que se añadira a la graphicLayer
+//Creo la variable symbol para crear el simbolo que se añadira a la graphicLayer
                 var symbol = new SimpleMarkerSymbol();
                 symbol.style = SimpleMarkerSymbol.STYLE_DIAMOND;
                 symbol.setSize(13);
                 symbol.setColor(new Color([255, 255, 0, 0.78]));
 //Creo un simpleRenderer
                 var renderer = new SimpleRenderer(symbol);
-//Aplico el renderer a la capa de gráficos
+//Aplico el renderer a la capa de gráficos y la añado al mapa
           graphicLayer.setRenderer(renderer);
 
           map.addLayer(graphicLayer);
@@ -100,7 +100,7 @@
 //Para poblaciones mayores de 500000 habitantes
           myQuery.where = "pop2000 > 500000";
 
-
+//Con los campos que quiero que me devuelva consultando la info en el directorio de servicios
           myQuery.outFields = ["objectid","areaname", "pop2000"];
 
           myQuery.returnGeometry = true;
@@ -127,7 +127,7 @@
         		  graphicLayer.add(grafico);
 
 
-    //Ejecuto la query y cuando finalize la consulta lanzamos la función show
+    //Ejecuto la query y cuando finalize la consulta lanzamos la función show o funcion de callback
               myQueryTask.execute(myQuery,show);
           });
 
