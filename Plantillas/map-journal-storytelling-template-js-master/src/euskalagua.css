@@ -1,0 +1,44 @@
+.sectionPanel .header {
+    position: relative;
+    height: 55px;
+    background-color: #759dc0 ;
+}
+.header .link, .sectionPanel .linkContainer {
+    color: #808080;
+}
+.section.swiper-slide.swiper-slide-visible.swiper-slide-active {
+    background-color: #ccf8fc;
+}
+.appTitle.anchored {
+    background-color: #ADD8E6;
+}
+.navDots .navDotsInner {
+    display: table-cell;
+    vertical-align: middle;
+    color: #F00;
+    max-width: 33px;
+    overflow: hidden;
+    background-color: #37546a;
+}
+
+.navDots .dot.active, .navDots .dot:hover {
+    color: #808080 !important;
+}
+.navDots .dot.active, .navDots .dot:active {
+    color: #FFFAF0 !important;
+}
+h3{
+font-family: 'Kavoon', sans-serif;
+color: 	#808080;
+}
+p{
+  font-family: 'Mandali', sans-serif;
+  color: 	#808080;
+}
+.overviewContainermapcontrol {
+  left: 50%;
+}
+.legendContainermapcontrol{
+  left:2.5%;
+  top:23%;
+}
